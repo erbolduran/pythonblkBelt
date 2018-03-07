@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Success!</title>
+</head>
+<body>
+	<h2>Hello, {{ user.name }}</h2>
+	<a href="/logout">Logout</a><br>
+
+	{% if friends %}
+	<strong>Here is the list of your friends:</strong>
+	{% endif %}
+	{% for yo in friends %}
+	{% empty %}
+	<strong>Get some friends homes!</strong>
+	{% endfor %}
+
+	<table>
+		<thead>
+			<tr>
+				<td>Alias</td>
+				<td>Action</td>
+			</tr>
+		</thead>
+		{% for friend in friends %}
+		<tbody>
+			<tr>
+				<td>{{ friend.alias }}</td>
+				<td><a href = "/user/{{friend.id}}">View Profile</a></td>
+				<td><a href = "/user/{{friend.id}}/unfriend">Remove as Friend</a></td>
+			</tr>
+		</tbody>
+		{% endfor %}
+	</table>
+	
+
+	<strong>List of Strangers</strong>
+	<table>
+		<thead>
+			<tr>
+				<td>Alias</td>
+				<td>Action</td>
+			</tr>
+		</thead>
+		{% for stranger in strangers %}
+		{% if stranger.id != user.id %}
+		<tbody>
+			<tr>
+				<td><a href="/user/{{stranger.id}}">{{ stranger.alias }}</a></td>
+				<td><form action = "/success/{{stranger.id}}" method="post">
+						{% csrf_token %}
+						<input type="hidden" />
+						<input type="submit" value = "Add as Friend" />
+					</form>
+				</td>
+			</tr>
+		</tbody>
+		{% endif %}
+		{% endfor %}
+	</table>
+</body>
+</html>
